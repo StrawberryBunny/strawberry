@@ -4,6 +4,8 @@ import { chatStore } from '../stores';
 import * as Types from './Types';
 
 import HomePanel from '../components/panels/HomePanel';
+import StatusPanel from '../components/panels/StatusPanel';
+import ChannelsPanel from '../components/panels/ChannelsPanel';
 
 export enum ConnectionState {
     login, fetchingTicket, charSelect, connecting, connected
@@ -93,13 +95,13 @@ export enum Tool {
 }
 
 export const TOOL_DATA = [
-    { enum: Tool.Home,          icon: 'home',           title: 'Home',                  panel: HomePanel },
-    { enum: Tool.Status,        icon: 'id-card',        title: 'Status',                panel: null },
-    { enum: Tool.Channels,      icon: 'th',             title: 'Channels',              panel: null },
-    { enum: Tool.PMs,           icon: 'user-secret',    title: 'Private Messages',      panel: null },
-    { enum: Tool.Friends,       icon: 'users',          title: 'Friends & Bookmarks',   panel: null },
-    { enum: Tool.Settings,      icon: 'cogs',           title: 'Settings',              panel: null },
-    { enum: Tool.SignOut,       icon: 'sign-out',       title: 'Sign Out',              panel: null }
+    { enum: Tool.Home,          icon: 'home',           title: 'Home' },
+    { enum: Tool.Status,        icon: 'id-card',        title: 'Status' },
+    { enum: Tool.Channels,      icon: 'th',             title: 'Channels' },
+    { enum: Tool.PMs,           icon: 'user-secret',    title: 'Private Messages' },
+    { enum: Tool.Friends,       icon: 'users',          title: 'Friends & Bookmarks' },
+    { enum: Tool.Settings,      icon: 'cogs',           title: 'Settings' },
+    { enum: Tool.SignOut,       icon: 'sign-out',       title: 'Sign Out' }
 ];
 
 export enum SortingMethod {
