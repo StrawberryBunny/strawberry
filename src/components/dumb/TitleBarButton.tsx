@@ -6,12 +6,13 @@ interface ITitleBarButtonProps {
     title: string;
     warning?: boolean;
     onClick?: any;
+    spinning?: boolean;
 }
 
 export default class TitleBarButton extends React.Component<ITitleBarButtonProps, {}> {
 
     render() {
-        return <span className={`fa fa-${this.props.icon} ${css(STYLES.main, this.props.warning && STYLES.warning)}`}
+        return <span className={`fa fa-${this.props.icon} ${this.props.spinning && 'fa-spin'} ${css(STYLES.main, this.props.warning && STYLES.warning)}`}
             title={this.props.title}
             alt={this.props.title}
             onClick={this.props.onClick}/>;
@@ -23,6 +24,7 @@ const STYLES = StyleSheet.create({
         '-webkit-app-region': 'no-drag',
         cursor: 'pointer',
         color: '#414141',
+        fontSize: '15pt',
         marginLeft: '3px',
         marginRight: '3px',
         ':hover': {

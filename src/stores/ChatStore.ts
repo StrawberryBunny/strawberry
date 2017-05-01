@@ -12,7 +12,7 @@ const URL_TEST_SERVER_UNENCRYPTED: string = 'ws://chat.f-list.net:8722';
 const URL_SERVER_ENCRYPTED: string = 'wss://chat.f-list.net:9799';
 const URL_SERVER_UNENCRYPTED: string = 'ws://chat.f-list.net:9722';
 
-const LOG_RECEIVE_MESSAGES: boolean = true;
+const LOG_RECEIVE_MESSAGES: boolean = false;
 const LOG_SEND_MESSAGES: boolean = false;
 
 export default class ChatStore {
@@ -51,7 +51,7 @@ export default class ChatStore {
         uiStore.connectionInfo = "Connecting to F-Chat.";
 
         // Start connecting
-        this.socket = new WebSocket(URL_TEST_SERVER_ENCRYPTED);
+        this.socket = new WebSocket(URL_SERVER_ENCRYPTED);
 
         // Listeners
         this.socket.onopen = () => {
@@ -215,6 +215,8 @@ export default class ChatStore {
     public requestChannels(): void {
         this.requestingChannels = true;
         this.sendMsg('CHA');
+        this.officialChannels = new Array<string>();
+        this.unofficialChannels = new Array<string>();
         if(LOG_SEND_MESSAGES) console.log("sendCHA");
     }
 
@@ -267,6 +269,7 @@ export default class ChatStore {
         
     }
 
+    @action
     private receiveCHA(obj: Packets.IReceivePacketCHA) {
         for(let item of obj.channels){
             let chan: Types.Channel = {
@@ -283,6 +286,7 @@ export default class ChatStore {
             };
 
             this.channels.set(chan.name, chan);
+            this.officialChannels.push(chan.name);
         }
 
         this.sendMsg('ORS');
@@ -375,6 +379,7 @@ export default class ChatStore {
         }
     }
 
+    @action
     private receiveORS(obj: Packets.IReceivePacketORS){
          for(let item of obj.channels){
             let chan: Types.Channel = {
@@ -391,10 +396,17 @@ export default class ChatStore {
             };
 
             this.channels.set(chan.name, chan);
+            this.unofficialChannels.push(chan.name);
         }
 
-        uiStore.connectionInfo = "Connected";
-        uiStore.connectionState = Enums.ConnectionState.connected;        
+        // End requesting
+        this.requestingChannels = false;
+
+        // If this is the initial connection
+        if(uiStore.connectionState == Enums.ConnectionState.connecting){
+            uiStore.connectionInfo = "Connected";
+            uiStore.connectionState = Enums.ConnectionState.connected;      
+        }  
     }
 
     private receiveSTA(obj: Packets.IReceivePacketSTA){

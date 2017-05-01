@@ -12,5 +12,8 @@ export default class UiStore {
     @observable public connectionInfo: string = null;
     @observable public maximized: boolean = false;
     @observable public currentTool: Enums.Tool = null;
+    
+    // Channels Panel
+    @observable public channelsSortingMethod: Enums.SortingMethod = Enums.SortingMethod.alphaAsc;
 
 }

@@ -9,8 +9,9 @@ import * as Enums from '../../utils/enums';
 
 import ToolBar from '../smart/ToolBar';
 import ChannelArea from '../smart/ChannelArea';
-import HomePanel from '../panels/HomePanel';
 import DefaultTitleBar from '../smart/DefaultTitleBar';
+import HomePanel from '../panels/HomePanel';
+import ChannelsPanel from '../panels/ChannelsPanel';
 
 interface IMainPageProps {
     style?: any;
@@ -24,6 +25,9 @@ export default class MainPage extends React.Component<IMainPageProps, {}> {
         switch(uiStore.currentTool){
             case Enums.Tool.Home:
                 toolPanel = <HomePanel style={STYLES.panel}/>;
+                break;
+            case Enums.Tool.Channels:
+                toolPanel = <ChannelsPanel style={STYLES.panel}/>
                 break;
         }
 

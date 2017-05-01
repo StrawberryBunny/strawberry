@@ -107,40 +107,38 @@ export enum SortingMethod {
 }
 
 export const SORTING_METHOD_DATA = [
-    { enum: SortingMethod.alphaAsc, icon: 'sort-alpha-asc', sortingMethod: function(a, b){
+    { enum: SortingMethod.alphaAsc, icon: 'sort-alpha-asc', title: 'Name Ascending', sortingMethod: function(a, b){
         let chanA: Types.Channel = chatStore.getChannel(a);
         let chanB: Types.Channel = chatStore.getChannel(b);
         if(chanA.title < chanB.title) return -1;
         if(chanB.title < chanA.title) return 1;
         return 0;
     }},
-    { enum: SortingMethod.alphaDesc, icon: 'sort-alpha-desc', sortingMethod: function(a, b){
+    { enum: SortingMethod.alphaDesc, icon: 'sort-alpha-desc', title: 'Name Descending', sortingMethod: function(a, b){
         let chanA: Types.Channel = chatStore.getChannel(a);
         let chanB: Types.Channel = chatStore.getChannel(b);
         if(chanB.title < chanA.title) return -1;
         if(chanA.title < chanB.title) return 1;
         return 0;
     }},
-    { enum: SortingMethod.numericAsc, icon: 'sort-numeric-asc', sortingMethod: function(a, b){
+    { enum: SortingMethod.numericAsc, icon: 'sort-numeric-asc', title: 'Character Count Ascending', sortingMethod: function(a, b){
         let chanA: Types.Channel = chatStore.getChannel(a);
         let chanB: Types.Channel = chatStore.getChannel(b);
         let countA: number = chanA.characters == null ? chanA.initialCharCount : chanA.characters.length;
         let countB: number = chanB.characters == null ? chanB.initialCharCount : chanB.characters.length;
-
-        if(countA > countB) return -1;
-        if(countB > countA) return 1;
+        if(countB > countA) return -1;
+        if(countA > countB) return 1;
         if(chanA.title < chanB.title) return -1;
         if(chanB.title < chanA.title) return 1;
         return 0;
     }},
-    { enum: SortingMethod.numericDesc, icon: 'sort-numeric-desc', sortingMethod: function(a, b){
+    { enum: SortingMethod.numericDesc, icon: 'sort-numeric-desc', title: 'Character Count Descending', sortingMethod: function(a, b){
         let chanA: Types.Channel = chatStore.getChannel(a);
         let chanB: Types.Channel = chatStore.getChannel(b);
         let countA: number = chanA.characters == null ? chanA.initialCharCount : chanA.characters.length;
         let countB: number = chanB.characters == null ? chanB.initialCharCount : chanB.characters.length;
-
-        if(countB > countA) return -1;
-        if(countA > countB) return 1;
+        if(countA > countB) return -1;
+        if(countB > countA) return 1;
         if(chanA.title < chanB.title) return -1;
         if(chanB.title < chanA.title) return 1;
         return 0;
