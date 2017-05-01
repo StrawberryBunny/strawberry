@@ -31,7 +31,7 @@ export default class App extends React.Component<{}, {}> {
                 content = <CharSelectPage style={STYLES.content}/>;
                 break;
             case Enums.ConnectionState.connected:
-                content = <MainPage/>
+                content = <MainPage style={STYLES.content}/>
                 break;
         }
 

@@ -14,17 +14,27 @@ export default class HomePanel extends React.Component<IHomePanelProps, {}> {
     render(){
         return <div className={css(STYLES.main, this.props.style)}>
             <TitleBar style={STYLES.titleBar}>
-                <h1>Home</h1>
+                <span>Home</span>
             </TitleBar>
+            <div className={css(STYLES.rest)}>
+            </div>
         </div>;
     }
 }
 
 const STYLES = StyleSheet.create({
     main: {
-        backgroundColor: '#2222BB'
+        flex: '1 1 auto',
+        display: 'flex',
+        flexFlow: 'column'
     },
     titleBar: {
-        justifyContent: 'flex-start'
+        flex: '0 0 auto',
+        justifyContent: 'flex-start',
+        fontWeight: 'bold',
+        paddingLeft: '10px'
+    },
+    rest: {
+        flex: '1 1 auto'
     }
 });

@@ -10,11 +10,14 @@ import * as Enums from '../../utils/enums';
 import ToolBar from '../smart/ToolBar';
 import ChannelArea from '../smart/ChannelArea';
 import HomePanel from '../panels/HomePanel';
-import TitleBar from '../dumb/TitleBar';
-import TitleBarButton from '../dumb/TitleBarButton';
+import DefaultTitleBar from '../smart/DefaultTitleBar';
+
+interface IMainPageProps {
+    style?: any;
+}
 
 @observer
-export default class MainPage extends React.Component<{}, {}> {
+export default class MainPage extends React.Component<IMainPageProps, {}> {
 
     render(){
         let toolPanel: JSX.Element = null;
@@ -24,15 +27,11 @@ export default class MainPage extends React.Component<{}, {}> {
                 break;
         }
 
-        return <div className={css(STYLES.main)}>
+        return <div className={css(STYLES.main, this.props.style)}>
             {toolPanel}
             <ToolBar style={STYLES.toolBar}/>
             <div className={css(STYLES.rightSide)}>
-                <TitleBar style={STYLES.titleBar}>
-                    <TitleBarButton icon="window-minimize" title="Minimize" onClick={null}/>
-                    <TitleBarButton icon={uiStore.maximized ? 'window-restore' : 'window-maximize'} title={uiStore.maximized ? 'Restore' : 'Maximize'} onClick={null}/>
-                    <TitleBarButton icon="window-close" title="Close" warning={true} onClick={null}/>
-                </TitleBar>
+                <DefaultTitleBar style={STYLES.titleBar}/>
                 <ChannelArea style={STYLES.channelArea}/>
             </div>
         </div>;
@@ -41,10 +40,11 @@ export default class MainPage extends React.Component<{}, {}> {
 
 const STYLES = StyleSheet.create({
     main: {
-        width: '100%',
-        height: '100vh',
         display: 'flex',
         flexFlow: 'row'
+    },
+    titleBar: {
+        width: '100%'
     },
     toolBar: {
         flex: '0 1 auto'
@@ -53,9 +53,6 @@ const STYLES = StyleSheet.create({
         flex: '1 1 auto',
         display: 'flex',
         flexFlow: 'column'
-    },
-    titleBar: {
-        flex: '0 1 auto'        
     },
     channelArea: {
         flex: '1 1 auto'
