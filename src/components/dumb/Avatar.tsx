@@ -4,12 +4,13 @@ import { StyleSheet, css } from 'aphrodite';
 
 interface IAvatarProps {
     character: string;
+    style?: any;
 }
 
 export default class Avatar extends React.Component<IAvatarProps, {}> {
 
     render(){
-        return <div className={css(STYLES.main)}>
+        return <div className={css(STYLES.main, this.props.style)}>
             <img className={`img-rounded`}
                 src={`https://static.f-list.net/images/avatar/${encodeURI(this.props.character.toLowerCase())}.png`}
                 title={this.props.character}

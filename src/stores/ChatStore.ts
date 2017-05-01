@@ -40,7 +40,7 @@ export default class ChatStore {
 
     // State
     @observable public requestingChannels: boolean = false;
-    public requestingStatusUpdate: boolean = false;
+    @observable public requestingStatusUpdate: boolean = false;
 
     public connect(character: string){
         // Store the character the user logged in as
@@ -51,7 +51,7 @@ export default class ChatStore {
         uiStore.connectionInfo = "Connecting to F-Chat.";
 
         // Start connecting
-        this.socket = new WebSocket(URL_SERVER_ENCRYPTED);
+        this.socket = new WebSocket(URL_TEST_SERVER_ENCRYPTED);
 
         // Listeners
         this.socket.onopen = () => {
@@ -410,7 +410,15 @@ export default class ChatStore {
     }
 
     private receiveSTA(obj: Packets.IReceivePacketSTA){
-        
+        // Receive status update
+        let char: Types.Character = this.getCharacter(obj.character);
+        char.status = Enums.STATUS_MAP[obj.status];
+        char.statusMessage = obj.statusmsg;
+
+        if(obj.character == this.userCharacter){
+            // Our status has been updated
+            this.requestingStatusUpdate = false;
+        }
     }
 
     private receiveVAR(obj: Packets.IReceivePacketVAR){

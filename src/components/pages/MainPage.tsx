@@ -12,6 +12,7 @@ import ChannelArea from '../smart/ChannelArea';
 import DefaultTitleBar from '../smart/DefaultTitleBar';
 import HomePanel from '../panels/HomePanel';
 import ChannelsPanel from '../panels/ChannelsPanel';
+import StatusPanel from '../panels/StatusPanel';
 
 interface IMainPageProps {
     style?: any;
@@ -28,6 +29,9 @@ export default class MainPage extends React.Component<IMainPageProps, {}> {
                 break;
             case Enums.Tool.Channels:
                 toolPanel = <ChannelsPanel style={STYLES.panel}/>
+                break;
+            case Enums.Tool.Status:
+                toolPanel = <StatusPanel style={STYLES.panel}/>
                 break;
         }
 
