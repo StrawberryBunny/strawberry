@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.vscode/
+npm-debug.log
+*.js
+*.js.map
+*.jsx
+*.jsx.map
+todo.txt
