@@ -1,7 +1,8 @@
 import { observable } from 'mobx';
 
 import * as Enums from '../utils/enums';
-
+import TitleBar from '../components/dumb/TitleBar';
+import TitleBarButton from '../components/dumb/TitleBarButton';
 
 
 export default class UiStore {

@@ -2,72 +2,51 @@ import * as React from 'react';
 
 import { StyleSheet, css } from 'aphrodite';
 import { observer } from 'mobx-react';
+import { ipcRenderer, remote } from 'electron';
 
 import { uiStore } from '../../stores';
 
 import * as Enums from '../../utils/enums';
 
-import TitleBar from './TitleBar';
-import ToolBar from './ToolBar';
-import LoginBox from './LoginBox';
-import LoadingOrb from './LoadingOrb';
-import CharSelect from './CharSelect';
-import Main from './Main';
+import LoginPage from '../pages/LoginPage';
+import LoadingPage from '../pages/LoadingPage';
+import CharSelectPage from '../pages/CharSelectPage';
+import MainPage from '../pages/MainPage';
 
 @observer
 export default class App extends React.Component<{}, {}> {
 
     render(){
+
         let content: JSX.Element = null;
         switch(uiStore.connectionState){
             case Enums.ConnectionState.login:
-                content = <div className={css(STYLES.main)}>
-                    <TitleBar style={STYLES.titleBar}/>
-                    <LoginBox/>
-                </div>;
+                content = <LoginPage style={STYLES.content}/>;
                 break;
             case Enums.ConnectionState.fetchingTicket:
             case Enums.ConnectionState.connecting:
-                content = <div className={css(STYLES.main)}>
-                    <TitleBar style={STYLES.titleBar}/>
-                    <LoadingOrb icon="spinner" size={5} spin={true} text={uiStore.connectionInfo}/>
-                </div>;
+                content = <LoadingPage style={STYLES.content}/>;
                 break;
             case Enums.ConnectionState.charSelect:
-                content = <div className={css(STYLES.main)}>
-                    <TitleBar style={STYLES.titleBar}/>
-                    <CharSelect/>
-                </div>;
+                content = <CharSelectPage style={STYLES.content}/>;
                 break;
             case Enums.ConnectionState.connected:
-                content = <Main/>
+                content = <MainPage/>
                 break;
         }
 
-        return content;
+        return <div className={css(STYLES.main)}>{content}</div>;
     }
 }
 
 const STYLES = StyleSheet.create({
     main: {
+        height: '100vh',
         backgroundColor: '#1e1e1e',
         color: '#cccccc',
-        display: 'flex',
-        flexFlow: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh'
+        display: 'flex'     
     },
-    titleBar: {
-        height: '34px',
-        width: '100%',
-        position: 'absolute',
-        top: '0px'
-    },
-    mainArea: {
-        flex: '1 1 auto',
-        display: 'flex',
-        flexFlow: 'row',
-        width: '100%'
+    content: {
+        flex: '1 1 auto'
     }
 });

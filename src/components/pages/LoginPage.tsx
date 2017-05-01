@@ -7,12 +7,14 @@ import { uiStore, userStore } from '../../stores';
 
 import * as Enums from '../../utils/enums';
 
-interface ILoginBoxProps {
+import DefaultTitleBar from '../smart/DefaultTitleBar';
+
+interface ILoginPageProps {
     style?: any;
 }
 
 @observer
-export default class LoginBox extends React.Component<ILoginBoxProps, {}> {
+export default class LoginPage extends React.Component<ILoginPageProps, {}> {
 
     private inputUsername: HTMLInputElement;
     private inputPassword: HTMLInputElement;
@@ -29,12 +31,14 @@ export default class LoginBox extends React.Component<ILoginBoxProps, {}> {
 
     render(){
         return <div className={css(STYLES.main, this.props.style)}>
-            <img src="images/logo-large.png"/>
-            <input ref={c => { this.inputUsername = c }} className={`${css(STYLES.input)} form-control`} type="text" placeholder="Username"/>
-            <input ref={c => { this.inputPassword = c }} className={`${css(STYLES.input)} form-control`} type="password" placeholder="Password"/>
-            <button className="btn btn-primary" onClick={this.login.bind(this)}>Login</button>
-            <span className={css(STYLES.error)}>{uiStore.connectionError}</span>
-            <span className={`${css(STYLES.debug)} fa fa-user-secret`} onClick={ () => {uiStore.connectionState = Enums.ConnectionState.connected}}/>
+            <DefaultTitleBar style={STYLES.titleBar}/>
+            <div className={css(STYLES.rest)}>
+                <img src="images/logo-large.png"/>
+                <input ref={c => { this.inputUsername = c }} className={`${css(STYLES.input)} form-control`} type="text" placeholder="Username"/>
+                <input ref={c => { this.inputPassword = c }} className={`${css(STYLES.input)} form-control`} type="password" placeholder="Password"/>
+                <button className="btn btn-primary" onClick={this.login.bind(this)}>Login</button>
+                <span className={css(STYLES.error)}>{uiStore.connectionError}</span>
+            </div>
         </div>;
     }
 }
@@ -44,6 +48,16 @@ const STYLES = StyleSheet.create({
         display: 'flex',
         flexFlow: 'column',
         alignItems: 'center'
+    },
+    titleBar: {
+        width: '100%'
+    },
+    rest: {
+        flex: '1 1 auto',
+        display: 'flex',
+        flexFlow: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     input: {
         marginBottom: '5px'
@@ -55,10 +69,5 @@ const STYLES = StyleSheet.create({
         bottom: '3px',
         width: '100%',
         textAlign: 'center'
-    },
-    debug: {
-        position: 'absolute',
-        bottom: '2px',
-        right: '4px'
     }
 });

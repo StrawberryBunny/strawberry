@@ -7,13 +7,14 @@ import { uiStore } from '../../stores';
 
 import * as Enums from '../../utils/enums';
 
-import ToolBar from './ToolBar';
-import TitleBar from './TitleBar';
-import ChannelArea from './ChannelArea';
+import ToolBar from '../smart/ToolBar';
+import ChannelArea from '../smart/ChannelArea';
 import HomePanel from '../panels/HomePanel';
+import TitleBar from '../dumb/TitleBar';
+import TitleBarButton from '../dumb/TitleBarButton';
 
 @observer
-export default class Main extends React.Component<{}, {}> {
+export default class MainPage extends React.Component<{}, {}> {
 
     render(){
         let toolPanel: JSX.Element = null;
@@ -27,7 +28,11 @@ export default class Main extends React.Component<{}, {}> {
             {toolPanel}
             <ToolBar style={STYLES.toolBar}/>
             <div className={css(STYLES.rightSide)}>
-                <TitleBar style={STYLES.titleBar}/>
+                <TitleBar style={STYLES.titleBar}>
+                    <TitleBarButton icon="window-minimize" title="Minimize" onClick={null}/>
+                    <TitleBarButton icon={uiStore.maximized ? 'window-restore' : 'window-maximize'} title={uiStore.maximized ? 'Restore' : 'Maximize'} onClick={null}/>
+                    <TitleBarButton icon="window-close" title="Close" warning={true} onClick={null}/>
+                </TitleBar>
                 <ChannelArea style={STYLES.channelArea}/>
             </div>
         </div>;
@@ -50,8 +55,7 @@ const STYLES = StyleSheet.create({
         flexFlow: 'column'
     },
     titleBar: {
-        flex: '0 1 auto',
-        height: '34px'
+        flex: '0 1 auto'        
     },
     channelArea: {
         flex: '1 1 auto'
