@@ -54,7 +54,7 @@ export class Channel {
         return this;
     }
 
-    public initUnofficial(data: Packets.IUnofficialChannel): Types.Channel {
+    public initUnofficial(data: Packets.IUnofficialChannel): Channel {
         this.official = false;
         this.name = data.name;
         this.title = data.title;
