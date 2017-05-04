@@ -19,10 +19,18 @@ export default class ChannelArea extends React.Component<IChannelAreaProps, {}> 
     private textArea: HTMLTextAreaElement;    
 
     render(){
+        let channel: Types.Channel = chatStore.getChannel(uiStore.selectedChannel);
         return <div className={css(STYLES.main, this.props.style)}>
             <MessageArea channel={uiStore.selectedChannel} style={STYLES.messageArea}/>
             <div className={css(STYLES.textAndButton)}>
-                <textarea className={`form-control ${css(STYLES.textArea)}`} ref={c => { this.textArea = c; }} maxLength={chatStore.chatMax}/>
+                <textarea ref={c => { this.textArea = c; }} 
+                    className={`form-control ${css(STYLES.textArea)}`} 
+                    maxLength={chatStore.chatMax}
+                    defaultValue={ channel.textAreaContents }
+                    onChange={() => {
+                        // Update this channel's current textbox
+                        channel.textAreaContents = this.textArea.value;
+                    }}/>
                 <button className={`btn ${css(STYLES.button)}`} onClick={() => {
                     if(this.textArea.value.length > 0){
                         chatStore.sendMessage(uiStore.selectedChannel, this.textArea.value);
