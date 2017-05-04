@@ -16,12 +16,18 @@ interface IChannelAreaProps {
 @observer
 export default class ChannelArea extends React.Component<IChannelAreaProps, {}> {
 
+    private textArea: HTMLTextAreaElement;    
+
     render(){
         return <div className={css(STYLES.main, this.props.style)}>
             <MessageArea channel={uiStore.selectedChannel} style={STYLES.messageArea}/>
             <div className={css(STYLES.textAndButton)}>
-                <textarea className={`form-control ${css(STYLES.textArea)}`} maxLength={chatStore.chatMax}/>
-                <button className={`btn ${css(STYLES.button)}`}>Send</button>
+                <textarea className={`form-control ${css(STYLES.textArea)}`} ref={c => { this.textArea = c; }} maxLength={chatStore.chatMax}/>
+                <button className={`btn ${css(STYLES.button)}`} onClick={() => {
+                    if(this.textArea.value.length > 0){
+                        chatStore.sendMessage(uiStore.selectedChannel, this.textArea.value);
+                    }
+                }}>Send</button>
             </div>
         </div>;
     }

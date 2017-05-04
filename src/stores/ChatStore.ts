@@ -231,9 +231,9 @@ export default class ChatStore {
         if(LOG_SEND_MESSAGES) console.log("sendSTA: " + packet.status + " - " + packet.statusmsg);
     }
     
-    public sendMessage(channel: string, message: string){
+    public sendMessage(channelName: string, message: string){
         let packet: Packets.ISendPacketMSG = {
-            channel: channel,
+            channel: channelName,
             message: message
         };
         this.sendMsg(`MSG ${JSON.stringify(packet)}`);
@@ -245,7 +245,11 @@ export default class ChatStore {
             character: this.userCharacter,
             message: message
         };
-        this.channels.get(channel).messages.push(msg);
+        let channel: Types.Channel = this.channels.get(channelName);
+        if(channel.messages == null){
+            channel.messages = new Array<Types.IMessage>();
+        }
+        channel.messages.push(msg);
 
         // Stats
         userStore.sentMessages++;
