@@ -1,3 +1,5 @@
+import { StyleSheet } from 'aphrodite';
+
 import { strEnum } from './EnumHelper';
 import { chatStore } from '../stores';
 
@@ -38,15 +40,26 @@ export enum Gender {
     None = 7
 }
 
+const GENDER_STYLES = StyleSheet.create({
+    male: {         color: '#5584da' },
+    female: {       color: '#f75e82' },
+    herm: {         color: '#9f5df0' },
+    shemale: {      color: '#eb4fb2' },
+    cuntboy: {      color: '#88e381' },
+    maleherm: {     color: '#69dff0' },
+    transgender: {  color: '#eb7743' },
+    none: {         color: '#efeeab' }
+});
+
 export const GENDER_DATA = [
-    { enum: Gender.Male,            color: '#5584da',       name: 'male' },
-    { enum: Gender.Female,          color: '#f75e82',       name: 'female' },
-    { enum: Gender.Herm,            color: '#9f5df0',       name: 'herm' },
-    { enum: Gender.Shemale,         color: '#eb4fb2',       name: 'shemale' },
-    { enum: Gender.Cuntboy,         color: '#88e381',       name: 'cuntboy' },
-    { enum: Gender.MaleHerm,        color: '#69dff0',       name: 'male-herm' },
-    { enum: Gender.Transgender,     color: '#eb7743',       name: 'transgender' },
-    { enum: Gender.None,            color: '#efeeab',       name: 'none' }
+    { enum: Gender.Male,            name: 'male',           style: GENDER_STYLES.male },
+    { enum: Gender.Female,          name: 'female',         style: GENDER_STYLES.female },
+    { enum: Gender.Herm,            name: 'herm',           style: GENDER_STYLES.herm },
+    { enum: Gender.Shemale,         name: 'shemale',        style: GENDER_STYLES.shemale },
+    { enum: Gender.Cuntboy,         name: 'cuntboy',        style: GENDER_STYLES.cuntboy },
+    { enum: Gender.MaleHerm,        name: 'male-herm',      style: GENDER_STYLES.maleherm },
+    { enum: Gender.Transgender,     name: 'transgender',    style: GENDER_STYLES.transgender },
+    { enum: Gender.None,            name: 'none',           style: GENDER_STYLES.none }
 ];
 
 export const GENDER_MAP = {

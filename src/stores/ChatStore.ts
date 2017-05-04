@@ -390,7 +390,16 @@ export default class ChatStore {
     }
 
     private receiveMSG(obj: Packets.IReceivePacketMSG){
-       
+        // Received channel message
+        let msg: Types.IMessage = {
+            type: Enums.MessageType.Character,
+            character: obj.character,
+            message: obj.message
+        };
+
+        let chan: Types.Channel = this.getChannel(obj.channel);
+        if(chan.messages == null) chan.messages = new Array<Types.IMessage>();
+        chan.messages.push(msg);
     }
 
     private receiveNLN(obj: Packets.IReceivePacketNLN){

@@ -18,25 +18,32 @@ export default class Message extends React.Component<IMessageProps, {}> {
         let title: JSX.Element = null;
         switch(this.props.message.type){
             case Enums.MessageType.Character:
-                title = <NamePlate character={this.props.message.character}/>;
+                title = <NamePlate style={STYLES.title} character={this.props.message.character}/>;
                 break;
             case Enums.MessageType.Broadcast:
-                title = <span>Admin Broadcast</span>;
+                title = <div className={css(STYLES.title)}>Admin Broadcast</div>;
                 break;
             case Enums.MessageType.Channel:
-                title = <span>Description</span>;
+                title = <div className={css(STYLES.title)}>Description</div>;
                 break;
         }
 
         return <div className={css(STYLES.main, this.props.style)}>
             {title}
-            {this.props.message.message}
+            <div className={css(STYLES.text)}>{": " + this.props.message.message}</div>
         </div>;
     }
 }
 
 const STYLES = StyleSheet.create({
     main: {
-
+        
+    },
+    title: {
+        flex: '0 0 auto',
+        float: 'left'
+    },
+    text: {
+        flex: '1 1 auto'
     }
 });
