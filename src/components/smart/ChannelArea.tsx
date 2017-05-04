@@ -26,6 +26,7 @@ export default class ChannelArea extends React.Component<IChannelAreaProps, {}> 
                 <button className={`btn ${css(STYLES.button)}`} onClick={() => {
                     if(this.textArea.value.length > 0){
                         chatStore.sendMessage(uiStore.selectedChannel, this.textArea.value);
+                        this.textArea.value = "";
                     }
                 }}>Send</button>
             </div>
