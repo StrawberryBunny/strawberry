@@ -84,6 +84,11 @@ const STYLES = StyleSheet.create({
     toolBar: {
         flex: '0 1 auto'
     },
+    panel: {
+        flex: '0 1 auto',
+        minWidth: '30%',
+        width: '30%'
+    },
     rightSide: {
         flex: '1 1 auto',
         display: 'flex',
@@ -99,9 +104,5 @@ const STYLES = StyleSheet.create({
     },
     channelArea: {
         flex: '1 1 auto'
-    },
-    panel: {
-        flex: '0 1 auto',
-        width: '30%'
     }
 });

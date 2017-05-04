@@ -33,7 +33,6 @@ export class Character {
     public statusMessage: string;
 
     public initLIS(data: string[]): Character {
-        console.log("init char: " + data.toString());
         this.name = data[0];
         this.gender = Enums.GENDER_MAP[data[1].toLowerCase()];
         this.status = Enums.STATUS_MAP[data[2].toLowerCase()];
