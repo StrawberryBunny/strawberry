@@ -18,12 +18,13 @@ export default class NamePlate extends React.Component<INamePlateProps, {}> {
 
     render(){
         let character: Types.Character = chatStore.getCharacter(this.props.character);
+        let color: string = Enums.GENDER_DATA[character.gender].color;
         let genderStyle = StyleSheet.create({
             main: {
                 color: Enums.GENDER_DATA[character.gender].color
             }
         });
-        return <span className={css(STYLES.main, this.props.style, genderStyle)}>
+        return <span className={css(STYLES.main, this.props.style, genderStyle.main)}>
             <img src={`images/status/status-small-${Enums.STATUS_DATA[character.status]}.png`}/>
             {character.name}
         </span>;

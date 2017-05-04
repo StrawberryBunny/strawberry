@@ -318,7 +318,11 @@ export default class ChatStore {
     }
 
     private receiveFLN(obj: Packets.IReceivePacketFLN){
-        
+        // user has gone offline
+        let char: Types.Character = this.getCharacter(obj.character);
+        char.status = Enums.Status.Offline;
+
+        // TODO - Remove this user from any channels they are in?
     }
 
     private receiveHLO(obj: Packets.IReceivePacketHLO){
@@ -376,12 +380,7 @@ export default class ChatStore {
 
     private receiveLIS(obj: Packets.IReceivePacketLIS){
         for(let item of obj.characters){
-            let char: Types.Character = {
-                name: item[0],
-                gender: Enums.GENDER_MAP[item[1]],
-                status: Enums.STATUS_MAP[item[2]],
-                statusMessage: item[3]
-            };
+            let char: Types.Character = new Types.Character().initLIS(item);
             this.characters.set(char.name, char);
         }
 
@@ -398,6 +397,11 @@ export default class ChatStore {
         if(obj.identity == this.userCharacter){
             uiStore.connectionInfo = "Fetching official channel list";
             this.requestChannels();       
+        }
+        else {
+            // Add to character list 
+            let char: Types.Character = new Types.Character().initNLN(obj.identity, obj.gender, obj.status);
+            this.characters.set(char.name, char);
         }
     }
 

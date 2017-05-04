@@ -39,14 +39,14 @@ export enum Gender {
 }
 
 export const GENDER_DATA = [
-    { enum: Gender.Male,            color: '#5584da' },
-    { enum: Gender.Female,          color: '#f75e82' },
-    { enum: Gender.Herm,            color: '#9f5df0' },
-    { enum: Gender.Shemale,         color: '#eb4fb2' },
-    { enum: Gender.Cuntboy,         color: '#88e381' },
-    { enum: Gender.MaleHerm,        color: '#69dff0' },
-    { enum: Gender.Transgender,     color: '#eb7743' },
-    { enum: Gender.None,            color: '#efeeab' },
+    { enum: Gender.Male,            color: '#5584da',       name: 'male' },
+    { enum: Gender.Female,          color: '#f75e82',       name: 'female' },
+    { enum: Gender.Herm,            color: '#9f5df0',       name: 'herm' },
+    { enum: Gender.Shemale,         color: '#eb4fb2',       name: 'shemale' },
+    { enum: Gender.Cuntboy,         color: '#88e381',       name: 'cuntboy' },
+    { enum: Gender.MaleHerm,        color: '#69dff0',       name: 'male-herm' },
+    { enum: Gender.Transgender,     color: '#eb7743',       name: 'transgender' },
+    { enum: Gender.None,            color: '#efeeab',       name: 'none' }
 ];
 
 export const GENDER_MAP = {
