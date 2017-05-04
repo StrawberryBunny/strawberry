@@ -1,6 +1,6 @@
-import * as Enums from './enums';
 import { observable } from 'mobx';
-
+import * as Enums from './enums';
+import * as Packets from '../utils/packets';
 
 export interface ITicket {
     characters: string[];
@@ -34,15 +34,32 @@ export class Character {
 }
 
 export class Channel {
-    name: string;
-    title: string;
-    official: boolean;
-    mode: Enums.ChannelMode;
-    initialCharCount: number;
-    opList: Array<string>;
-    characters: Array<string>;
-    description: string;
-    @observable messages: Array<IMessage>;
-    textAreaContents: string;
+    public name: string;
+    public title: string;
+    public official: boolean;
+    public mode: Enums.ChannelMode;
+    public initialCharCount: number;
+    public opList: Array<string>;
+    public characters: Array<string>;
+    public description: string;
+    @observable public messages: Array<IMessage>;
+    public textAreaContents: string;
+
+    public initOfficial(data: Packets.IOfficialChannel): Channel {
+        this.official = true;
+        this.name = data.name;
+        this.title = data.name;
+        this.mode = Enums.CHANNEL_MODE_MAP[data.mode];
+        this.initialCharCount = data.characters;
+        return this;
+    }
+
+    public initUnofficial(data: Packets.IUnofficialChannel): Types.Channel {
+        this.official = false;
+        this.name = data.name;
+        this.title = data.title;
+        this.initialCharCount = data.characters;
+        return this;
+    }
 }
 

@@ -278,19 +278,7 @@ export default class ChatStore {
     @action
     private receiveCHA(obj: Packets.IReceivePacketCHA) {
         for(let item of obj.channels){
-            let chan: Types.Channel = {
-                official: true,
-                name: item.name,
-                mode: Enums.CHANNEL_MODE_MAP[item.mode],
-                initialCharCount: item.characters,
-                characters: null,
-                messages: null,
-                opList: null,
-                title: item.name,
-                description: null,
-                textAreaContents: null
-            };
-
+            let chan: Types.Channel = new Types.Channel().initOfficial(item);
             this.channels.set(chan.name, chan);
             this.officialChannels.push(chan.name);
         }
@@ -416,19 +404,7 @@ export default class ChatStore {
     @action
     private receiveORS(obj: Packets.IReceivePacketORS){
          for(let item of obj.channels){
-            let chan: Types.Channel = {
-                official: false,
-                name: item.name,
-                mode: null,
-                initialCharCount: item.characters,
-                characters: null,
-                messages: null,
-                opList: null,
-                title: item.title,
-                description: null,
-                textAreaContents: null
-            };
-
+            let chan: Types.Channel = new Types.Channel().initUnofficial(item);
             this.channels.set(chan.name, chan);
             this.unofficialChannels.push(chan.name);
         }

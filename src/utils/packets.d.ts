@@ -3,13 +3,13 @@ export interface IIdentity {
     identity: string;
 }
 
-export interface IPublicChannel {
+export interface IOfficialChannel {
     name: string;
     mode: string;
     characters: number;    
 }
 
-export interface IPrivateChannel {
+export interface IUnofficialChannel {
     name: string;
     characters: number;
     title: string;
@@ -299,7 +299,7 @@ export interface IReceivePacketCDS {
 
 // Sends the client a list of all public channels
 export interface IReceivePacketCHA {
-    channels: IPublicChannel[];    
+    channels: IOfficialChannel[];    
 }
 
 
@@ -454,7 +454,7 @@ export interface IReceivePacketFRL {
 
 // Gives a list of open private rooms
 export interface IReceivePacketORS {
-    channels: IPrivateChannel[];
+    channels: IUnofficialChannel[];
 }
 
 // Profile data commands sent in response to a PRO client command
