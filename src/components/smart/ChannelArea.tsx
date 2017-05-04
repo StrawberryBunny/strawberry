@@ -17,15 +17,12 @@ interface IChannelAreaProps {
 export default class ChannelArea extends React.Component<IChannelAreaProps, {}> {
 
     render(){
-        let content: JSX.Element = null;
-        if(uiStore.selectedChannel == null){
-            content = <img className={css(STYLES.noimage)} src="images/logo-large.png"/>;
-        }
-        else {
-            content = <MessageArea channel={uiStore.selectedChannel}/>;
-        }
         return <div className={css(STYLES.main, this.props.style)}>
-            {content}
+            <MessageArea channel={uiStore.selectedChannel} style={STYLES.messageArea}/>
+            <div className={css(STYLES.textAndButton)}>
+                <textarea className={`form-control ${css(STYLES.textArea)}`} maxLength={chatStore.chatMax}/>
+                <button className={`btn ${css(STYLES.button)}`}>Send</button>
+            </div>
         </div>;
     }
 }
@@ -35,10 +32,27 @@ const STYLES = StyleSheet.create({
         flex: '1 1 auto',
         display: 'flex',
         flexFlow: 'column',
-        alignItems: 'center',
-        justifyContent: 'center'
+        padding: '5px'
     },
-    noimage: {
-        opacity: 0.1
+    messageArea: {
+        flex: '1 1 auto'
+    },
+    textAndButton: {
+        flex: '0 0 auto',
+        height: '15%',
+        minHeight: '180px',
+        display: 'flex',
+        flexFlow: 'row'
+    },
+    textArea: {        
+        resize: 'none',
+        flex: '1 1 auto'
+    },
+    button: {
+        flex: '0 0 auto',
+        width: '20%',
+        minWidth: '80px',
+        maxWidth: '180px',
+        marginLeft: '5px'
     }
 });

@@ -7,8 +7,6 @@ import { uiStore, userStore } from '../../stores';
 
 import * as Enums from '../../utils/enums';
 
-import DefaultTitleBar from '../smart/DefaultTitleBar';
-
 interface ILoginPageProps {
     style?: any;
 }
@@ -31,7 +29,6 @@ export default class LoginPage extends React.Component<ILoginPageProps, {}> {
 
     render(){
         return <div className={css(STYLES.main, this.props.style)}>
-            <DefaultTitleBar style={STYLES.titleBar}/>
             <div className={css(STYLES.rest)}>
                 <img src="images/logo-large.png"/>
                 <input ref={c => { this.inputUsername = c }} className={`${css(STYLES.input)} form-control`} type="text" placeholder="Username"/>

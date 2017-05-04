@@ -23,12 +23,12 @@ const STYLES = StyleSheet.create({
     main: {
         '-webkit-app-region': 'no-drag',
         cursor: 'pointer',
-        color: '#414141',
+        color: '#adadad',
         fontSize: '15pt',
         marginLeft: '3px',
         marginRight: '3px',
         ':hover': {
-            color: '#505050'
+            color: '#ffffff'
         },
         ':active': {
             color: '#0F0F0F'

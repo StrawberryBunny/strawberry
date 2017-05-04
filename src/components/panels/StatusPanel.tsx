@@ -25,7 +25,7 @@ export default class StatusPanel extends React.Component<IStatusPanelProps, {}> 
     render(){
         let userChar: Types.Character = chatStore.getUserCharacter();
         return <div className={css(STYLES.main, this.props.style)}>
-            <TitleBar style={STYLES.titleBar}>
+            <TitleBar styles={[STYLES.titleBar]}>
                 <span>Status</span>
                 <div>
                     <TitleBarButton title="Reset" icon="eraser" onClick={ () => { 

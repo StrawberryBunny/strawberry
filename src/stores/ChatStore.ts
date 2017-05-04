@@ -24,10 +24,10 @@ export default class ChatStore {
     public globalOps: string[] = new Array<string>();
     public channels: ObservableMap<Types.Channel> = new ObservableMap<Types.Channel>();
     public characters: ObservableMap<Types.Character> = new ObservableMap<Types.Character>();
-    public openChannels: Array<string> = new Array<string>();
+    @observable public openChannels: Array<string> = new Array<string>();
     @observable public officialChannels: Array<string> = new Array<string>();
     @observable public unofficialChannels: Array<string> = new Array<string>();
-    public openPMs: Array<string> = new Array<string>();
+    @observable public openPMs: Array<string> = new Array<string>();
 
     public chatMax: number;
     public privMax: number;
@@ -266,7 +266,9 @@ export default class ChatStore {
     }
     
     private receiveCDS(obj: Packets.IReceivePacketCDS){
-        
+        // A channel's description has changed, sent in response to JCH
+        let channel: Types.Channel = this.channels.get(obj.channel);
+        channel.description = obj.description;
     }
 
     @action
@@ -345,11 +347,39 @@ export default class ChatStore {
     } 
 
     private receiveJCH(obj: Packets.IReceivePacketJCH){
-        
+        // A user has joined a channel
+        let channel: Types.Channel = this.channels.get(obj.channel);
+        if(channel.characters == null){
+            channel.characters = new Array<string>();
+        }
+        channel.characters.push(obj.character.identity);
+
+        // Was this our character?
+        if(obj.character.identity == this.userCharacter){
+            this.openChannels.push(obj.channel);
+            // If this was the first channel to be opened
+            if(this.openChannels.length == 1){
+                uiStore.selectedChannel = obj.channel;
+            }
+        }
     }
 
     private receiveLCH(obj: Packets.IReceivePacketLCH){
-        
+        // A user has left a channel
+        let channel: Types.Channel = this.channels.get(obj.channel);
+        let index: number = channel.characters.indexOf(obj.character);
+        channel.characters.splice(index, 1);
+
+        // Was this our character?
+        if(obj.character == this.userCharacter){
+            index = this.openChannels.indexOf(obj.channel);
+            this.openChannels.splice(index, 1);
+
+            // If this was the last open channel
+            if(this.openChannels.length == 0){
+                uiStore.selectedChannel = null;
+            }
+        }
     }
 
     private receiveLIS(obj: Packets.IReceivePacketLIS){

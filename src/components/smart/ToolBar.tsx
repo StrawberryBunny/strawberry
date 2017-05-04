@@ -18,7 +18,9 @@ export default class ToolBar extends React.Component<IToolBarProps, {}> {
 
     render(){
         return <div className={css(STYLES.main, this.props.style)}>
-            <img className={css(STYLES.image)} src="images/icons/icon24.png"/>
+            <div className={css(STYLES.icon)}>
+                <img src="images/icons/icon24.png"/>
+            </div>
             {Enums.TOOL_DATA.map((result, i) => {
                 return <ToolBarButton key={i} 
                     icon={result.icon} 
@@ -38,13 +40,17 @@ const STYLES = StyleSheet.create({
         display: 'flex',
         flexFlow: 'column',
         alignItems: 'center',
-        backgroundColor: '#252526',
+        backgroundColor: '#333333',
         fontSize: '14pt'
     },
-    image: {
-        paddingTop: '5px',
-        paddingBottom: '5px',
-        '-webkit-app-region': 'drag'
+    icon: {
+        '-webkit-app-region': 'drag',
+        width: '100%',
+        height: '34px',
+        display: 'flex',
+        flexFlow: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     button: {
         width: '100%'

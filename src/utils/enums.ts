@@ -90,6 +90,7 @@ export enum Tool {
     Channels,
     PMs,
     Friends,
+    Log,
     Settings,
     SignOut
 }
@@ -100,6 +101,7 @@ export const TOOL_DATA = [
     { enum: Tool.Channels,      icon: 'th',             title: 'Channels' },
     { enum: Tool.PMs,           icon: 'user-secret',    title: 'Private Messages' },
     { enum: Tool.Friends,       icon: 'users',          title: 'Friends & Bookmarks' },
+    { enum: Tool.Log,           icon: 'bars',           title: 'Log' },
     { enum: Tool.Settings,      icon: 'cogs',           title: 'Settings' },
     { enum: Tool.SignOut,       icon: 'sign-out',       title: 'Sign Out' }
 ];
@@ -146,6 +148,10 @@ export const SORTING_METHOD_DATA = [
         return 0;
     } },
 ];
+
+export function getSortingFunc(sortingMethod: SortingMethod){
+    return SORTING_METHOD_DATA[sortingMethod].sortingMethod;
+}
 
 export enum MessageType {
     Character, Broadcast, Channel

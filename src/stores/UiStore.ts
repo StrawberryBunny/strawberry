@@ -13,7 +13,7 @@ export default class UiStore {
     @observable public maximized: boolean = false;
     @observable public currentTool: Enums.Tool = null;
     @observable public selectedChannel: string = null;
-    
+
     // Channels Panel
     @observable public channelsSortingMethod: Enums.SortingMethod = Enums.SortingMethod.alphaAsc;
 

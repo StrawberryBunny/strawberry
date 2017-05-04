@@ -1,10 +1,12 @@
 import * as React from 'react';
+
 import { StyleSheet, css } from 'aphrodite';
-
 import { observer } from 'mobx-react';
-import { ipcRenderer, remote } from 'electron';
+import { remote } from 'electron';
 
-import { uiStore } from '../../stores';
+import { uiStore, chatStore } from '../../stores';
+
+import * as Types from '../../utils/types';
 
 import TitleBar from '../dumb/TitleBar';
 import TitleBarButton from '../dumb/TitleBarButton';
@@ -15,30 +17,40 @@ interface IDefaultTitleBarProps {
 
 @observer
 export default class DefaultTitleBar extends React.Component<IDefaultTitleBarProps, {}> {
-        
-    componentWillMount(){
-        ipcRenderer.on('maximize', () => {
-            uiStore.maximized = true;
-        });
-        ipcRenderer.on('unmaximize', () => {
-            uiStore.maximized = false;
-        });
-    }
 
     render(){
-        return <TitleBar style={this.props.style}>
-            <TitleBarButton
-                icon="window-minimize"
-                title="Minimize"
-                onClick={ () => { remote.getCurrentWindow().minimize() } }/>
-            <TitleBarButton 
-                icon={uiStore.maximized ? "window-restore" : "window-maximize"}
-                title={uiStore.maximized ? "Restore" : "Maximize"}
-                onClick={ () => { uiStore.maximized ? remote.getCurrentWindow().unmaximize() : remote.getCurrentWindow().maximize() } }/>
-            <TitleBarButton 
-                icon="window-close"
-                title="Close"
-                onClick={ () => { remote.getCurrentWindow().close() } }/>
+        let channel: Types.Channel = null;
+        if(uiStore.selectedChannel != null){
+            channel = chatStore.getChannel(uiStore.selectedChannel);
+        }
+
+        return <TitleBar styles={[this.props.style, STYLES.main]}>
+            <div className={css(STYLES.icons)}>
+                <TitleBarButton title="Minimize" icon="window-minimize" onClick={() => {
+                    remote.getCurrentWindow().minimize();
+                }}/>
+                <TitleBarButton 
+                    title={uiStore.maximized ? "Restore" : "Maximize"} 
+                    icon={uiStore.maximized ? "window-restore" : "window-maximize"}
+                    onClick={() => {
+                        uiStore.maximized ? remote.getCurrentWindow().unmaximize() : remote.getCurrentWindow().maximize();
+                    }}/>
+                <TitleBarButton title="Close" icon="window-close" warning={true} onClick={() => {
+                    remote.getCurrentWindow().close();
+                }}/>
+            </div>
         </TitleBar>;
     }
 }
+
+const STYLES = StyleSheet.create({
+    main: {
+        justifyContent: 'flex-end'
+    },
+    icons: {
+        display: 'flex',
+        flexFlow: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',        
+    }
+});

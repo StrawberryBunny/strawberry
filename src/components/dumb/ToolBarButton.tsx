@@ -25,9 +25,9 @@ export default class ToolBarButton extends React.Component<IToolBarButtonProps, 
 const STYLES = StyleSheet.create({
     main: {
         cursor: 'pointer',
-        color: '#414141',        
+        color: '#adadad',        
         ':hover': {
-            color: '#505050'
+            color: '#ffffff'
         },
         ':active': {
             color: '#0F0F0F'

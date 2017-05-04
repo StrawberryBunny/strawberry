@@ -7,8 +7,6 @@ import { userStore, uiStore, chatStore } from '../../stores';
 
 import * as Enums from '../../utils/enums';
 
-import DefaultTitleBar from '../smart/DefaultTitleBar';
-
 interface ICharSelectPageProps {
     style?: any;
 }
@@ -25,7 +23,6 @@ export default class CharSelectPage extends React.Component<ICharSelectPageProps
 
     render(){
         return <div className={css(STYLES.main, this.props.style)}>
-            <DefaultTitleBar style={STYLES.titleBar}/>
             <div className={css(STYLES.rest)}>
                 <img ref={c => { this.image = c }} className={`${css(STYLES.image)} img-rounded`} src={`https://static.f-list.net/images/avatar/${encodeURI(userStore.ticket.default_character.toLowerCase())}.png`}/>
                 <select ref={c => { this.select = c }} className={`${css(STYLES.select)} form-control`} onChange={this.selectChanged.bind(this)} defaultValue={userStore.ticket.default_character}>
