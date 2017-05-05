@@ -3,9 +3,12 @@ import * as React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import { observer } from 'mobx-react';
 
-import { chatStore } from '../../stores';
+import { chatStore, uiStore } from '../../stores';
 
-import OpenListEntrySmall from '../dumb/OpenListEntrySmall';
+import * as Types from '../../utils/types';
+
+import OpenListEntry from '../dumb/OpenListEntry';
+import ToolBarButton from '../dumb/ToolBarButton';
 
 interface IOpenListProps {
     small: boolean;
@@ -16,12 +19,22 @@ interface IOpenListProps {
 export default class OpenList extends React.Component<IOpenListProps, {}> {
 
     render(){
-        return <div className={css(STYLES.main, this.props.style, this.props.small ? STYLES.mainSmall : STYLES.mainLarge)}>
+        return <div className={css(STYLES.main, this.props.style)}>
             {chatStore.openChannels.map(result => {
-                return <OpenListEntrySmall key={result} character={false} name={result} style={STYLES.entry} selected={false}/>;
+                let channel: Types.Channel = chatStore.getChannel(result);
+                return <ToolBarButton key={result} icon={channel.official ? 'th' : 'key'} selected={!uiStore.selectedIsPM && uiStore.selected == result} title={channel.title}
+                    onClick={() => { 
+                        uiStore.selectedIsPM = false;
+                        uiStore.selected = channel.name;
+                    }}/>;
             })}
             {chatStore.openPMs.map(result => {
-                return <OpenListEntrySmall key={result} character={true} name={result} style={STYLES.entry} selected={false}/>;
+                let character: Types.Character = chatStore.getCharacter(result);
+                return <ToolBarButton key={result} image={character.name} selected={uiStore.selectedIsPM && uiStore.selected == result} title={character.name} 
+                    onClick={() => {
+                        uiStore.selectedIsPM = true;
+                        uiStore.selected = character.name;
+                    }}/>;
             })}
         </div>;
     }
@@ -32,15 +45,7 @@ const STYLES = StyleSheet.create({
         display: 'flex',
         flexFlow: 'column',
         alignItems: 'center',
-        backgroundColor: '#252526'
-    },
-    mainSmall: {
-        
-    },
-    mainLarge: {
-
-    },
-    entry: {
-
+        backgroundColor: '#252526',
+        fontSize: '14pt'
     }
 });

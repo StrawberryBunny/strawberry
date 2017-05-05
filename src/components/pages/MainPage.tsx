@@ -14,7 +14,6 @@ import ToolBar from '../smart/ToolBar';
 import ChannelArea from '../smart/ChannelArea';
 import NoChannelArea from '../dumb/NoChannelArea';
 import OpenList from '../smart/OpenList';
-import HomePanel from '../panels/HomePanel';
 import ChannelsPanel from '../panels/ChannelsPanel';
 import StatusPanel from '../panels/StatusPanel';
 
@@ -28,9 +27,6 @@ export default class MainPage extends React.Component<IMainPageProps, {}> {
     render(){
         let toolPanel: JSX.Element = null;
         switch(uiStore.currentTool){
-            case Enums.Tool.Home:
-                toolPanel = <ChannelsPanel style={STYLES.panel} open={true} includePMS={true}/>;
-                break;
             case Enums.Tool.Channels:
                 toolPanel = <ChannelsPanel style={STYLES.panel} open={false} includePMS={false}/>
                 break;
@@ -44,7 +40,7 @@ export default class MainPage extends React.Component<IMainPageProps, {}> {
             <ToolBar style={STYLES.toolBar}/>
             <div className={css(STYLES.rightSide)}>
                 <TitleBar styles={[STYLES.titleBar]}>
-                    <span>{uiStore.selectedChannel}</span>
+                    <span>{uiStore.selected}</span>
                     <div className={css(STYLES.sysIcons)}>
                         <TitleBarButton icon="window-minimize" title="Minimize" onClick={() => { remote.getCurrentWindow().minimize() }}/>
                         <TitleBarButton icon={uiStore.maximized ? "window-restore" : "window-maximize"} title={uiStore.maximized ? "Restore" : "Maximize"} onClick={() => {
@@ -54,7 +50,8 @@ export default class MainPage extends React.Component<IMainPageProps, {}> {
                     </div>
                 </TitleBar>
                 <div className={css(STYLES.mainArea)}>
-                    {uiStore.selectedChannel != null ? <ChannelArea style={STYLES.channelArea}/> : <NoChannelArea style={STYLES.channelArea}/>}
+                    {uiStore.selected != null ? <ChannelArea style={STYLES.channelArea}/> : <NoChannelArea style={STYLES.channelArea}/>}
+                    <OpenList small={true}/>
                 </div>
             </div>
         </div>;

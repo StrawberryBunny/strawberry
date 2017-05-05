@@ -355,7 +355,7 @@ export default class ChatStore {
             this.openChannels.push(obj.channel);
             // If this was the first channel to be opened
             if(this.openChannels.length == 1){
-                uiStore.selectedChannel = obj.channel;
+                uiStore.selected = obj.channel;
             }
         }
     }
@@ -373,7 +373,7 @@ export default class ChatStore {
 
             // If this was the last open channel
             if(this.openChannels.length == 0){
-                uiStore.selectedChannel = null;
+                uiStore.selected = null;
             }
         }
     }

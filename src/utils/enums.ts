@@ -5,10 +5,6 @@ import { chatStore } from '../stores';
 
 import * as Types from './Types';
 
-import HomePanel from '../components/panels/HomePanel';
-import StatusPanel from '../components/panels/StatusPanel';
-import ChannelsPanel from '../components/panels/ChannelsPanel';
-
 export enum ConnectionState {
     login, fetchingTicket, charSelect, connecting, connected
 }

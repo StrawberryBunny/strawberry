@@ -20,8 +20,8 @@ export default class DefaultTitleBar extends React.Component<IDefaultTitleBarPro
 
     render(){
         let channel: Types.Channel = null;
-        if(uiStore.selectedChannel != null){
-            channel = chatStore.getChannel(uiStore.selectedChannel);
+        if(uiStore.selected != null){
+            channel = chatStore.getChannel(uiStore.selected);
         }
 
         return <TitleBar styles={[this.props.style, STYLES.main]}>

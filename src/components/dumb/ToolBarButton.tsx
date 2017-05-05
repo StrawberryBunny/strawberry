@@ -3,9 +3,10 @@ import * as React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 
 interface IToolBarButtonProps {
-    icon: string;
     title: string;
     selected: boolean;
+    icon?: string;
+    image?: string;
     onClick?: any;
     style?: any;
 }
@@ -13,11 +14,9 @@ interface IToolBarButtonProps {
 export default class ToolBarButton extends React.Component<IToolBarButtonProps, {}> {
 
     render(){
-        return <div className={css(STYLES.main, this.props.style, this.props.selected && STYLES.selected)}>
-            <span className={`${css(STYLES.span)} fa fa-${this.props.icon}`} 
-                title={this.props.title}
-                alt={this.props.title}
-                onClick={this.props.onClick}/>
+        return <div className={css(STYLES.main, this.props.style, this.props.selected && STYLES.selected)} title={this.props.title} alt={this.props.title} onClick={this.props.onClick}>
+            {this.props.icon ? <span className={`${css(STYLES.icon)} fa fa-${this.props.icon}`}/> : 
+                <img className={css(STYLES.image)} src={`https://static.f-list.net/images/avatar/${encodeURI(this.props.image.toLowerCase())}.png`}/>}
         </div>;
     }
 }
@@ -27,7 +26,8 @@ const STYLES = StyleSheet.create({
         cursor: 'pointer',
         color: '#adadad',        
         ':hover': {
-            color: '#ffffff'
+            color: '#ffffff',
+            backgroundColor: '#444444'
         },
         ':active': {
             color: '#0F0F0F'
@@ -37,8 +37,12 @@ const STYLES = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'              
     },
-    span: {
+    icon: {
         padding: '10px'
+    },
+    image: {
+        width: '20px',
+        height: '20px'
     },
     selected: {
         backgroundColor: '#1e1e1e'

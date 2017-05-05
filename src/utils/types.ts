@@ -59,7 +59,7 @@ export class Channel {
     public characters: Array<string>;
     public description: string;
     @observable public messages: Array<IMessage>;
-    public textAreaContents: string;
+    @observable public currentMessage: string = "";
 
     public initOfficial(data: Packets.IOfficialChannel): Channel {
         this.official = true;

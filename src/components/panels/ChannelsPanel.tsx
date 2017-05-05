@@ -10,6 +10,7 @@ import * as Enums from '../../utils/enums';
 
 import TitleBar from '../dumb/TitleBar';
 import TitleBarButton from '../dumb/TitleBarButton';
+import {ListEntryChannel, ListEntryPM} from '../dumb/ListEntry';
 
 interface IChannelsPanelProps {
     open: boolean;
@@ -20,9 +21,9 @@ interface IChannelsPanelProps {
 @observer
 export default class ChannelsPanel extends React.Component<IChannelsPanelProps, {}> {
 
-    private createSection(title: string, channels: Array<string>, open: boolean, headerStyle: any, itemStyle: any): JSX.Element {
+    private createSection(title: string, channels: Array<string>, open: boolean): JSX.Element {
         return <div>
-            <div className={css(STYLES.header, headerStyle)}>
+            <div className={css(STYLES.header)}>
                 <span>{title}</span>
                 <span>{channels.length}</span>
             </div>
@@ -32,13 +33,7 @@ export default class ChannelsPanel extends React.Component<IChannelsPanelProps, 
                     let isOpen: boolean = chatStore.openChannels.indexOf(result) != -1;
                     
                     if((open && isOpen) || (!open && !isOpen)){
-                        return <div className={css(STYLES.entry, itemStyle)} key={result} 
-                            onClick={() => { 
-                                if(!open) chatStore.joinChannel(channel.name);
-                            }}>
-                            <span>{channel.title}</span>
-                            <span>{channel.characters == null ? channel.initialCharCount : channel.characters.length}</span>
-                        </div>
+                        return <ListEntryChannel key={result} channel={channel} isOpen={isOpen}/>;
                     }
                 })}
             </div>
@@ -54,9 +49,7 @@ export default class ChannelsPanel extends React.Component<IChannelsPanelProps, 
             <div>
                 {chatStore.openPMs.map(result => {
                     let character: Types.Character = chatStore.getCharacter(result);
-                    return <div className={css(STYLES.entry, STYLES.entryPM)} key={result}>
-                        <span>{character.name}</span>
-                    </div>
+                    return <ListEntryPM key={result} character={character}/>;
                 })}
             </div>
         </div>;
@@ -80,8 +73,8 @@ export default class ChannelsPanel extends React.Component<IChannelsPanelProps, 
                 </div>
             </TitleBar>
             <div className={css(STYLES.rest)}>
-                {this.createSection("Official Channels", chatStore.officialChannels.sort(Enums.getSortingFunc(uiStore.channelsSortingMethod)), this.props.open, STYLES.headerOfficial, STYLES.entryOfficial)}
-                {this.createSection("Unofficial Channels", chatStore.unofficialChannels.sort(Enums.getSortingFunc(uiStore.channelsSortingMethod)), this.props.open, STYLES.headerUnofficial, STYLES.entryUnofficial)}
+                {this.createSection("Official Channels", chatStore.officialChannels.sort(Enums.getSortingFunc(uiStore.channelsSortingMethod)), this.props.open)}
+                {this.createSection("Unofficial Channels", chatStore.unofficialChannels.sort(Enums.getSortingFunc(uiStore.channelsSortingMethod)), this.props.open)}
                 {this.props.includePMS && this.createPMSection()}
             </div>
         </div>;
@@ -126,55 +119,45 @@ const STYLES = StyleSheet.create({
         display: 'flex',
         flexFlow: 'row',
         justifyContent: 'space-between',
-        padding: '5px 10px 5px 10px',
-        color: '#1e1e1e'
+        padding: '5px 10px 5px 10px'
     },
     entryOfficial: {
-        backgroundColor: '#bb3b2f',
+        backgroundColor: '#302828',
         ':hover': {
-            backgroundColor: '#f35118'
+            backgroundColor: '#b1674c'
         },
         ':nth-child(even)': {
-            backgroundColor: '#d05347',
+            backgroundColor: '#473f3f',
             ':hover': {
-                backgroundColor: '#f35118'
+                backgroundColor: '#b1674c'
             },
         }
     },
     entryUnofficial: {
-        backgroundColor: '#4c9447',
+        backgroundColor: '#45493e',
         ':hover': {
-            backgroundColor: '#aee141'
+            backgroundColor: '#748a43'
         },
         ':nth-child(even)': {
-            backgroundColor: '#66a662',
+            backgroundColor: '#2e3227',
             ':hover': {
-                backgroundColor: '#aee141'
+                backgroundColor: '#748a43'
             },
         }
     },
-    entryOpen: {
-        backgroundColor: '#cd2f20',
+    entryPM: {
+        backgroundColor: '#3c4549',
         ':hover': {
-            backgroundColor: '#e03e2f'
+            backgroundColor: '#46798a'
         },
         ':nth-child(even)': {
-            backgroundColor: '#ee4434',
+            backgroundColor: '#272f33',
             ':hover': {
-                backgroundColor: '#f45c4e'
-            }
+                backgroundColor: '#46798a'
+            },
         }
     },
-    entryPM: {
-        backgroundColor: '#29a6cf',
-        ':hover': {
-            backgroundColor: '#34c0ee'
-        },
-        ':nth-child(even)': {
-            backgroundColor: '#1d84a6',
-            ':hover': {
-                backgroundColor: '#34c0ee'
-            }
-        }
+    closeIcon: {
+        
     }
 });
