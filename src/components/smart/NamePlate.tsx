@@ -18,7 +18,9 @@ export default class NamePlate extends React.Component<INamePlateProps, {}> {
 
     render(){
         let character: Types.Character = chatStore.getCharacter(this.props.character);
-        return <div className={css(STYLES.main, this.props.style, Enums.GENDER_DATA[character.gender].style)}>
+        let genderStyle = Enums.GENDER_DATA[character.gender].style;
+        
+        return <div className={css(STYLES.main, this.props.style, genderStyle)}>
             <img className={css(STYLES.status)} src={`images/status/status-small-${Enums.STATUS_DATA[character.status]}.png`}/>
             {character.name}
         </div>;

@@ -38,6 +38,6 @@ export default class MessageArea extends React.Component<IMessageArea, {}> {
 
 const STYLES = StyleSheet.create({
     main: {
-        
+        overflowY: 'auto'
     }
 });

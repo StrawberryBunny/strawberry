@@ -22,11 +22,14 @@ export default class ChatStore {
     // Data
     public userCharacter: string = 'Random Dork';
     public globalOps: string[] = new Array<string>();
+
     public channels: ObservableMap<Types.Channel> = new ObservableMap<Types.Channel>();
+    private newChannels: ObservableMap<Types.Channel>;
+
     public characters: ObservableMap<Types.Character> = new ObservableMap<Types.Character>();
-    @observable public openChannels: Array<string> = new Array<string>();
     @observable public officialChannels: Array<string> = new Array<string>();
     @observable public unofficialChannels: Array<string> = new Array<string>();
+    @observable public openChannels: Array<string> = new Array<string>();
     @observable public openPMs: Array<string> = new Array<string>();
 
     public chatMax: number;
@@ -51,7 +54,7 @@ export default class ChatStore {
         uiStore.connectionInfo = "Connecting to F-Chat.";
 
         // Start connecting
-        this.socket = new WebSocket(URL_SERVER_ENCRYPTED);
+        this.socket = new WebSocket(URL_TEST_SERVER_ENCRYPTED);
 
         // Listeners
         this.socket.onopen = () => {
@@ -148,6 +151,9 @@ export default class ChatStore {
                     break;
                 case 'LIS':
                     this.receiveLIS(obj as Packets.IReceivePacketLIS);
+                    break;
+                case 'LRP':
+                    // TODO
                     break;
                 case 'MSG':
                     this.receiveMSG(obj as Packets.IReceivePacketMSG);
@@ -280,9 +286,21 @@ export default class ChatStore {
 
     @action
     private receiveCHA(obj: Packets.IReceivePacketCHA) {
+        this.newChannels = new ObservableMap<Types.Channel>();
+        
         for(let item of obj.channels){
-            let chan: Types.Channel = new Types.Channel().initOfficial(item);
-            this.channels.set(chan.name, chan);
+            // Does this channel already exist
+            let chan: Types.Channel = this.channels.get(item.name);
+
+            if(chan != null){
+                chan.mode = Enums.CHANNEL_MODE_MAP[item.mode];
+                chan.initialCharCount = item.characters;
+            }
+            else {
+                chan = new Types.Channel().initOfficial(item);
+            }
+
+            this.newChannels.set(chan.name, chan);            
             this.officialChannels.push(chan.name);
         }
 
@@ -419,14 +437,24 @@ export default class ChatStore {
 
     @action
     private receiveORS(obj: Packets.IReceivePacketORS){
-         for(let item of obj.channels){
-            let chan: Types.Channel = new Types.Channel().initUnofficial(item);
-            this.channels.set(chan.name, chan);
+        for(let item of obj.channels){
+            let chan: Types.Channel = this.channels.get(item.name);
+            if(chan != null){
+                chan.initialCharCount = item.characters;
+            }
+            else {
+                chan = new Types.Channel().initUnofficial(item);
+            }
+            this.newChannels.set(chan.name, chan);
             this.unofficialChannels.push(chan.name);
         }
 
         // End requesting
         this.requestingChannels = false;
+
+        // Set new to old
+        this.channels = this.newChannels;
+        this.newChannels = null;
 
         // If this is the initial connection
         if(uiStore.connectionState == Enums.ConnectionState.connecting){

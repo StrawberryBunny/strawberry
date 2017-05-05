@@ -37,14 +37,14 @@ export enum Gender {
 }
 
 const GENDER_STYLES = StyleSheet.create({
-    male: {         color: '#5584da' },
-    female: {       color: '#f75e82' },
-    herm: {         color: '#9f5df0' },
-    shemale: {      color: '#eb4fb2' },
-    cuntboy: {      color: '#88e381' },
-    maleherm: {     color: '#69dff0' },
-    transgender: {  color: '#eb7743' },
-    none: {         color: '#efeeab' }
+    male: {             color: '#5584da' },
+    female: {           color: '#f75e82' },
+    herm: {             color: '#9f5df0' },
+    shemale: {          color: '#eb4fb2' },
+    cuntboy: {          color: '#88e381' },
+    maleherm: {         color: '#69dff0' },
+    transgender: {      color: '#eb7743' },
+    none: {             color: '#efeeab' }
 });
 
 export const GENDER_DATA = [

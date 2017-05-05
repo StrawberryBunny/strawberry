@@ -37,7 +37,8 @@ export default class Message extends React.Component<IMessageProps, {}> {
 
 const STYLES = StyleSheet.create({
     main: {
-        
+        padding: '5px',
+        backgroundColor: '#2A2A2A'
     },
     title: {
         flex: '0 0 auto',

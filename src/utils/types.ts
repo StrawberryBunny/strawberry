@@ -49,8 +49,8 @@ export class Character {
 
     public initNLN(name: string, gender: string, status: string): Character {
         this.name = name;
-        this.gender = Enums.GENDER_MAP[gender];
-        this.status = Enums.STATUS_MAP[status];
+        this.gender = Enums.GENDER_MAP[gender.toLowerCase()];
+        this.status = Enums.STATUS_MAP[status.toLowerCase()];
         this.statusMessage = "";
         return this;
     }
