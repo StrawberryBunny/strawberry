@@ -51,7 +51,7 @@ export default class ChatStore {
         uiStore.connectionInfo = "Connecting to F-Chat.";
 
         // Start connecting
-        this.socket = new WebSocket(URL_TEST_SERVER_ENCRYPTED);
+        this.socket = new WebSocket(URL_SERVER_ENCRYPTED);
 
         // Listeners
         this.socket.onopen = () => {
@@ -160,6 +160,9 @@ export default class ChatStore {
                     break;
                 case 'PIN':
                     this.sendMsg('PIN');
+                    break;
+                case 'PRI':
+                    this.receivePRI(obj as Packets.IReceivePacketPRI);
                     break;
                 case 'STA':
                     this.receiveSTA(obj as Packets.IReceivePacketSTA);
@@ -430,6 +433,19 @@ export default class ChatStore {
             uiStore.connectionInfo = "Connected";
             uiStore.connectionState = Enums.ConnectionState.connected;      
         }  
+    }
+
+
+    private receivePRI(obj: Packets.IReceivePacketPRI){
+        // Received private message
+        let msg: Types.IPrivateMessage = {
+            character: obj.character,
+            message: obj.message
+        };
+
+        let char: Types.Character = this.getCharacter(obj.character);
+        if(char.messages == null) char.messages = new Array<Types.IPrivateMessage>();
+        char.messages.push(msg);
     }
 
     private receiveSTA(obj: Packets.IReceivePacketSTA){

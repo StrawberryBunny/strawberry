@@ -12,6 +12,7 @@ import Message from '../dumb/Message';
 
 interface IMessageArea {
     channel: string;
+    pm: boolean;
     style?: any;
 }
 
@@ -19,9 +20,16 @@ interface IMessageArea {
 export default class MessageArea extends React.Component<IMessageArea, {}> {
 
     render(){
-        let channel: Types.Channel = chatStore.getChannel(this.props.channel);
+        let obj = null;
+        if(this.props.pm){
+            obj = chatStore.getCharacter(this.props.channel);
+        }
+        else {
+            obj = chatStore.getChannel(this.props.channel);
+        }
+
         return <div className={css(STYLES.main, this.props.style)}>
-            {channel.messages != null && channel.messages.map((result, i) => {
+            {obj.messages != null && obj.messages.map((result, i) => {
                 return <Message key={i} message={result}/>;
             })}
         </div>;

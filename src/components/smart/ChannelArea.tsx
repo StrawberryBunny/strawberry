@@ -19,20 +19,33 @@ export default class ChannelArea extends React.Component<IChannelAreaProps, {}> 
     private textArea: HTMLTextAreaElement;    
 
     private onChangeFunction(event){
-        let channel: Types.Channel = chatStore.getChannel(uiStore.selected);
-        channel.currentMessage = event.target.value;
+        let obj = null;
+        if(uiStore.selectedIsPM){
+            obj = chatStore.getCharacter(uiStore.selected);
+        }
+        else {
+            obj = chatStore.getChannel(uiStore.selected);
+        }
+
+        obj.currentMessage = event.target.value;
     }
 
     render(){
-        let channel: Types.Channel = chatStore.getChannel(uiStore.selected);
+        let obj = null;
+        if(uiStore.selectedIsPM){
+            obj = chatStore.getCharacter(uiStore.selected);
+        }
+        else {
+            obj = chatStore.getChannel(uiStore.selected);
+        }
         
         return <div className={css(STYLES.main, this.props.style)}>
-            <MessageArea channel={uiStore.selected} style={STYLES.messageArea}/>
+            <MessageArea channel={uiStore.selected} pm={uiStore.selectedIsPM} style={STYLES.messageArea}/>
             <div className={css(STYLES.textAndButton)}>
                 <textarea ref={c => { this.textArea = c; }} 
                     className={`form-control ${css(STYLES.textArea)}`} 
                     maxLength={chatStore.chatMax}
-                    value={ channel.currentMessage }
+                    value={ obj.currentMessage }
                     onChange={this.onChangeFunction.bind(this)}/>
                 <button className={`btn ${css(STYLES.button)}`} onClick={() => {
                     if(this.textArea.value.length > 0){

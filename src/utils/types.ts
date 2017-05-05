@@ -26,11 +26,18 @@ export interface IMessage {
     message: string;
 }
 
+export interface IPrivateMessage {
+    character: string;
+    message: string;
+}
+
 export class Character {
     public name: string;
     public gender: Enums.Gender;
     public status: Enums.Status;
     public statusMessage: string;
+    @observable public currentMessage: string;
+    @observable public messages: Array<IPrivateMessage>;
 
     public initLIS(data: string[]): Character {
         this.name = data[0];
