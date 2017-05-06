@@ -49,7 +49,7 @@ export default class MainPage extends React.Component<IMainPageProps, {}> {
             <ToolBar style={STYLES.toolBar}/>
             <div className={css(STYLES.rightSide)}>
                 <TitleBar styles={[STYLES.titleBar]}>
-                    <span>{uiStore.selectedIsPM ? obj.name : obj.title}</span>
+                    <span>{uiStore.selected != null && (uiStore.selectedIsPM ? obj.name : obj.title)}</span>
                     <div className={css(STYLES.sysIcons)}>
                         <TitleBarButton icon="window-minimize" title="Minimize" onClick={() => { remote.getCurrentWindow().minimize() }}/>
                         <TitleBarButton icon={uiStore.maximized ? "window-restore" : "window-maximize"} title={uiStore.maximized ? "Restore" : "Maximize"} onClick={() => {
