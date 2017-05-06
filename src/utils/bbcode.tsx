@@ -28,8 +28,7 @@ class Parser {
         // Create root elem
         let root: Elem = new Elem(input, true);
         let elem: JSX.Element = root.toReact(this.tags, 0);
-        //console.log(root.toString());
-        return elem;        
+        return elem;
     }
 }
 

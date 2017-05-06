@@ -5,6 +5,8 @@ import { StyleSheet, css } from 'aphrodite';
 import * as Enums from '../../utils/enums';
 import * as Types from '../../utils/types';
 
+import { bbcode } from '../../utils/bbcode';
+
 import NamePlate from '../smart/NamePlate';
 
 interface IMessageProps {
@@ -15,11 +17,22 @@ interface IMessageProps {
 export default class Message extends React.Component<IMessageProps, {}> {
     
     render(){
+        let msg: string = this.props.message.message;
+        let isAction: boolean = msg.substr(0, 3) == '/me';
+        let isOwned: boolean = msg.charAt(3) == "'";
+
+        if(isAction){
+            msg = "[i]" + msg.substr(3) + "[/i]";
+        }
+        else {
+            msg = ": " + msg;
+        }
+
         let title: JSX.Element = null;
         switch(this.props.message.type){
             case Enums.MessageType.Character:
             case Enums.MessageType.Private:
-                title = <NamePlate style={STYLES.title} character={this.props.message.character}/>;
+                title = <NamePlate styles={[STYLES.title, ((isAction && !isOwned) && STYLES.action)]} character={this.props.message.character} action={isAction}/>;
                 break;
             case Enums.MessageType.Broadcast:
                 title = <div className={css(STYLES.title)}>Admin Broadcast</div>;
@@ -31,7 +44,9 @@ export default class Message extends React.Component<IMessageProps, {}> {
 
         return <div className={css(STYLES.main, this.props.style)}>
             {title}
-            <div className={css(STYLES.text)}>{": " + this.props.message.message}</div>
+            <div className={css(STYLES.text)}>
+                {bbcode.parse(msg)}
+            </div>
         </div>;
     }
 }
@@ -48,5 +63,8 @@ const STYLES = StyleSheet.create({
     },
     text: {
         flex: '1 1 auto'
+    },
+    action: {
+        marginRight: '3px'
     }
 });
