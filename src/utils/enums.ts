@@ -163,7 +163,7 @@ export function getSortingFunc(sortingMethod: SortingMethod){
 }
 
 export enum MessageType {
-    Character, Broadcast, Channel
+    Character, Broadcast, Channel, Private
 }
 
 const BBColorStr = strEnum([

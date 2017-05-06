@@ -49,7 +49,12 @@ export default class ChannelArea extends React.Component<IChannelAreaProps, {}> 
                     onChange={this.onChangeFunction.bind(this)}/>
                 <button className={`btn ${css(STYLES.button)}`} onClick={() => {
                     if(this.textArea.value.length > 0){
-                        chatStore.sendMessage(uiStore.selected, this.textArea.value);
+                        if(uiStore.selectedIsPM){
+                            chatStore.sendPrivateMessage(uiStore.selected, this.textArea.value);
+                        }
+                        else {
+                            chatStore.sendMessage(uiStore.selected, this.textArea.value);
+                        }
                         this.textArea.value = "";
                         obj.currentMessage = "";
                     }

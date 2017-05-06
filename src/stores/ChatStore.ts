@@ -254,11 +254,36 @@ export default class ChatStore {
             character: this.userCharacter,
             message: message
         };
-        let channel: Types.Channel = this.channels.get(channelName);
+        let channel: Types.Channel = this.getChannel(channelName);
         if(channel.messages == null){
             channel.messages = new Array<Types.IMessage>();
         }
         channel.messages.push(msg);
+
+        // Stats
+        userStore.sentMessages++;
+    }
+
+    public sendPrivateMessage(characterName: string, message: string){
+        let packet: Packets.ISendPacketPRI = {
+            recipient: characterName,
+            message: message
+        };
+        this.sendMsg(`PRI ${JSON.stringify(packet)}`);
+        if(LOG_SEND_MESSAGES) console.log("sendPRI: " + packet.recipient + ", " + packet.message);
+
+        // Add the message to our list
+        let msg: Types.IMessage = {
+            type: Enums.MessageType.Private,
+            character: this.userCharacter,
+            message: message
+        };
+        
+        let character: Types.Character = this.getCharacter(characterName);
+        if(character.messages == null){
+            character.messages = new Array<Types.IMessage>();
+        }
+        character.messages.push(msg);
 
         // Stats
         userStore.sentMessages++;
@@ -466,14 +491,20 @@ export default class ChatStore {
 
     private receivePRI(obj: Packets.IReceivePacketPRI){
         // Received private message
-        let msg: Types.IPrivateMessage = {
+        let msg: Types.IMessage = {
+            type: Enums.MessageType.Private,
             character: obj.character,
             message: obj.message
         };
 
         let char: Types.Character = this.getCharacter(obj.character);
-        if(char.messages == null) char.messages = new Array<Types.IPrivateMessage>();
+        if(char.messages == null) char.messages = new Array<Types.IMessage>();
         char.messages.push(msg);
+
+        // If a PM window isn't open for this person, open one
+        if(this.openPMs.indexOf(char.name) == -1){
+            this.openPMs.push(char.name);
+        }
     }
 
     private receiveSTA(obj: Packets.IReceivePacketSTA){

@@ -22,7 +22,7 @@ export default class OpenList extends React.Component<IOpenListProps, {}> {
         return <div className={css(STYLES.main, this.props.style)}>
             {chatStore.openChannels.map(result => {
                 let channel: Types.Channel = chatStore.getChannel(result);
-                return <ToolBarButton key={result} icon={channel.official ? 'th' : 'key'} selected={!uiStore.selectedIsPM && uiStore.selected == result} title={channel.title}
+                return <ToolBarButton key={result} icon={channel.official ? 'th' : 'key'} selected={!uiStore.selectedIsPM && uiStore.selected == channel.name} title={channel.title}
                     onClick={() => { 
                         uiStore.selectedIsPM = false;
                         uiStore.selected = channel.name;
@@ -30,7 +30,7 @@ export default class OpenList extends React.Component<IOpenListProps, {}> {
             })}
             {chatStore.openPMs.map(result => {
                 let character: Types.Character = chatStore.getCharacter(result);
-                return <ToolBarButton key={result} image={character.name} selected={uiStore.selectedIsPM && uiStore.selected == result} title={character.name} 
+                return <ToolBarButton key={result} image={character.name} selected={uiStore.selectedIsPM && uiStore.selected == character.name} title={character.name} 
                     onClick={() => {
                         uiStore.selectedIsPM = true;
                         uiStore.selected = character.name;

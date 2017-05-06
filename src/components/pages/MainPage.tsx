@@ -4,8 +4,9 @@ import { ipcRenderer, remote } from 'electron';
 import { StyleSheet, css } from 'aphrodite';
 import { observer } from 'mobx-react';
 
-import { uiStore } from '../../stores';
+import { uiStore, chatStore } from '../../stores';
 
+import * as Types from '../../utils/types';
 import * as Enums from '../../utils/enums';
 
 import TitleBar from '../dumb/TitleBar';
@@ -35,12 +36,20 @@ export default class MainPage extends React.Component<IMainPageProps, {}> {
                 break;
         }
 
+        let obj = null;
+        if(uiStore.selectedIsPM){
+            obj = chatStore.getCharacter(uiStore.selected);
+        }
+        else {
+            obj = chatStore.getChannel(uiStore.selected);
+        }
+
         return <div className={css(STYLES.main, this.props.style)}>
             {toolPanel}
             <ToolBar style={STYLES.toolBar}/>
             <div className={css(STYLES.rightSide)}>
                 <TitleBar styles={[STYLES.titleBar]}>
-                    <span>{uiStore.selected}</span>
+                    <span>{uiStore.selectedIsPM ? obj.name : obj.title}</span>
                     <div className={css(STYLES.sysIcons)}>
                         <TitleBarButton icon="window-minimize" title="Minimize" onClick={() => { remote.getCurrentWindow().minimize() }}/>
                         <TitleBarButton icon={uiStore.maximized ? "window-restore" : "window-maximize"} title={uiStore.maximized ? "Restore" : "Maximize"} onClick={() => {

@@ -18,6 +18,7 @@ export default class Message extends React.Component<IMessageProps, {}> {
         let title: JSX.Element = null;
         switch(this.props.message.type){
             case Enums.MessageType.Character:
+            case Enums.MessageType.Private:
                 title = <NamePlate style={STYLES.title} character={this.props.message.character}/>;
                 break;
             case Enums.MessageType.Broadcast:
@@ -38,7 +39,8 @@ export default class Message extends React.Component<IMessageProps, {}> {
 const STYLES = StyleSheet.create({
     main: {
         padding: '5px',
-        backgroundColor: '#2A2A2A'
+        backgroundColor: '#2A2A2A',
+        marginBottom: '5px'
     },
     title: {
         flex: '0 0 auto',
