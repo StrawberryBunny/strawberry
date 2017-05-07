@@ -22,7 +22,7 @@ export interface IBookmark {
 
 export interface IMessage {
     type: Enums.MessageType;
-    character: string;
+    character: Character;
     message: string;
 }
 
@@ -33,6 +33,7 @@ export class Character {
     public statusMessage: string;
     @observable public currentMessage: string = "";
     @observable public messages: Array<IMessage>;
+    public scrollState: number = null;
 
     public initLIS(data: string[]): Character {
         this.name = data[0];
@@ -58,10 +59,11 @@ export class Channel {
     public mode: Enums.ChannelMode;
     public initialCharCount: number;
     public opList: Array<string>;
-    public characters: Array<string>;
+    @observable public characters: Array<Character>;
     public description: string;
     @observable public messages: Array<IMessage>;
     @observable public currentMessage: string = "";
+    public scrollState: number = null;
 
     public initOfficial(data: Packets.IOfficialChannel): Channel {
         this.official = true;

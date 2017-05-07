@@ -44,7 +44,7 @@ export default class StatusPanel extends React.Component<IStatusPanelProps, {}> 
                 </div>
             </TitleBar>
             <div className={css(STYLES.rest)}>
-                <Avatar character={chatStore.userCharacter} style={STYLES.avatar}/>
+                <Avatar character={chatStore.userCharacterName} style={STYLES.avatar}/>
                 <select ref={ c => { this.selectStatus = c }} 
                     className={`form-control ${css(STYLES.select)}`}
                     defaultValue={ userChar.status.toString() }>

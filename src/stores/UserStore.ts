@@ -17,6 +17,8 @@ export default class UserStore {
     @observable public sentMessages: number = 0;
     @observable public sentPMs: number = 0;
     public logInTime: Date;
+    public friendsList: Array<string>;
+    public bookmarksList: Array<string>;
 
     @computed 
     public get onlineTime(): any {
@@ -66,6 +68,16 @@ export default class UserStore {
                 if(a.name > b.name) return 1;
                 return 0;
             });
+
+            this.friendsList = new Array<string>();
+            for(let fr of ticketObj.friends){
+                this.friendsList.push(fr.source_name);
+            }
+
+            this.bookmarksList = new Array<string>();
+            for(let bm of ticketObj.bookmarks){
+                this.bookmarksList.push(bm.name);
+            }
             
             // Set as our ticket
             this.ticket = ticketObj;

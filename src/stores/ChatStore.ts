@@ -20,7 +20,8 @@ export default class ChatStore {
     private socket: WebSocket = null;
     
     // Data
-    public userCharacter: string = 'Random Dork';
+    public userCharacterName: string = 'Random Dork';
+    public userCharacter: Types.Character;
     public globalOps: string[] = new Array<string>();
 
     public channels: ObservableMap<Types.Channel> = new ObservableMap<Types.Channel>();
@@ -47,7 +48,7 @@ export default class ChatStore {
 
     public connect(character: string){
         // Store the character the user logged in as
-        this.userCharacter = character;
+        this.userCharacterName = character;
 
         // Change the loading page
         uiStore.connectionState = Enums.ConnectionState.connecting;
@@ -191,8 +192,12 @@ export default class ChatStore {
         return this.characters.get(name);
     }
     
+    public getUserCharacterName(): string {
+        return this.userCharacterName;
+    }
+    
     public getUserCharacter(): Types.Character {
-        return this.characters.get(this.userCharacter);
+        return this.userCharacter;
     }
 
     public getChannel(name: string): Types.Channel {
@@ -342,7 +347,8 @@ export default class ChatStore {
     }
 
     private receiveCOL(obj: Packets.IReceivePacketCOL){
-        
+        let chan: Types.Channel = this.getChannel(obj.channel);
+        chan.opList = obj.oplist;
     }
 
     private receiveCON(obj: Packets.IReceivePacketCON){
@@ -375,8 +381,15 @@ export default class ChatStore {
         console.log(obj.message);
     }
 
+    @action
     private receiveICH(obj: Packets.IReceivePacketICH){
-        
+        let channel: Types.Channel = this.getChannel(obj.channel);
+        channel.mode = Enums.CHANNEL_MODE_MAP[obj.mode];
+
+        channel.characters = new Array<Types.Character>();
+        for(let user of obj.users){
+            channel.characters.push(this.getCharacter(user.identity));
+        }
     }
 
     private receiveIDN(obj: Packets.IReceivePacketIDN){
@@ -392,12 +405,12 @@ export default class ChatStore {
         // A user has joined a channel
         let channel: Types.Channel = this.channels.get(obj.channel);
         if(channel.characters == null){
-            channel.characters = new Array<string>();
+            channel.characters = new Array<Types.Character>();
         }
-        channel.characters.push(obj.character.identity);
+        channel.characters.push(this.getCharacter(obj.character.identity));
 
         // Was this our character?
-        if(obj.character.identity == this.userCharacter){
+        if(obj.character.identity == this.userCharacterName){
             this.openChannels.push(obj.channel);
             // If this was the first channel to be opened
             if(this.openChannels.length == 1){
@@ -408,12 +421,13 @@ export default class ChatStore {
 
     private receiveLCH(obj: Packets.IReceivePacketLCH){
         // A user has left a channel
-        let channel: Types.Channel = this.channels.get(obj.channel);
-        let index: number = channel.characters.indexOf(obj.character);
+        let channel: Types.Channel = this.getChannel(obj.channel);
+        let char: Types.Character = this.getCharacter(obj.character);
+        let index: number = channel.characters.indexOf(char);
         channel.characters.splice(index, 1);
 
         // Was this our character?
-        if(obj.character == this.userCharacter){
+        if(char == this.userCharacter){
             index = this.openChannels.indexOf(obj.channel);
             this.openChannels.splice(index, 1);
 
@@ -439,7 +453,7 @@ export default class ChatStore {
         // Received channel message
         let msg: Types.IMessage = {
             type: Enums.MessageType.Character,
-            character: obj.character,
+            character: this.getCharacter(obj.character),
             message: obj.message
         };
 
@@ -448,8 +462,10 @@ export default class ChatStore {
         chan.messages.push(msg);
     }
 
+    @action
     private receiveNLN(obj: Packets.IReceivePacketNLN){
-        if(obj.identity == this.userCharacter){
+        if(obj.identity == this.userCharacterName){
+            this.userCharacter = this.getCharacter(obj.identity);
             uiStore.connectionInfo = "Fetching official channel list";
             this.requestChannels();       
         }
@@ -493,7 +509,7 @@ export default class ChatStore {
         // Received private message
         let msg: Types.IMessage = {
             type: Enums.MessageType.Private,
-            character: obj.character,
+            character: this.getCharacter(obj.character),
             message: obj.message
         };
 
@@ -513,7 +529,7 @@ export default class ChatStore {
         char.status = Enums.STATUS_MAP[obj.status];
         char.statusMessage = obj.statusmsg;
 
-        if(obj.character == this.userCharacter){
+        if(obj.character == this.userCharacterName){
             // Our status has been updated
             this.requestingStatusUpdate = false;
         }

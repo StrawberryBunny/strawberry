@@ -32,7 +32,8 @@ export default class Message extends React.Component<IMessageProps, {}> {
         switch(this.props.message.type){
             case Enums.MessageType.Character:
             case Enums.MessageType.Private:
-                title = <NamePlate styles={[STYLES.title, ((isAction && !isOwned) && STYLES.action)]} character={this.props.message.character} action={isAction}/>;
+                title = <NamePlate styles={[STYLES.title, ((isAction && !isOwned) && STYLES.action)]} action={isAction} characterName={this.props.message.character.name}
+                    gender={this.props.message.character.gender} status={this.props.message.character.status} statusMessage={this.props.message.character.statusMessage}/>;
                 break;
             case Enums.MessageType.Broadcast:
                 title = <div className={css(STYLES.title)}>Admin Broadcast</div>;
@@ -55,7 +56,8 @@ const STYLES = StyleSheet.create({
     main: {
         padding: '5px',
         backgroundColor: '#2A2A2A',
-        marginBottom: '5px'
+        margin: '5px',
+        whiteSpace: 'pre-wrap'
     },
     title: {
         flex: '0 0 auto',
