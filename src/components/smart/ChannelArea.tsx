@@ -106,8 +106,7 @@ const STYLES = StyleSheet.create({
         flex: '0 0 auto',
         width: '20%',
         minWidth: '80px',
-        maxWidth: '180px',
-        marginLeft: '5px'
+        maxWidth: '180px'
     },
     textAndButton: {
         flex: '0 0 auto',

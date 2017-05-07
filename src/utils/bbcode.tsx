@@ -171,7 +171,7 @@ class Elem {
             return child.toReact(tags, i++);
         });
 
-        let childrenElem: JSX.Element = <div key={key++}>{kids}</div>;
+        let childrenElem: JSX.Element = <span key={key++}>{kids}</span>;
 
         // Convert to React
         if(this.isTag()){
@@ -185,7 +185,7 @@ class Elem {
             // Must just be a text node
             let ta = document.createElement('textarea');
             ta.innerHTML = this.bbString;
-            return <div key={key++}>{ta.value}</div>;
+            return <span key={key++}>{ta.value}</span>;
         }
         else {
             return childrenElem;
