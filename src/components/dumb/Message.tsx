@@ -5,6 +5,7 @@ import { StyleSheet, css } from 'aphrodite';
 import * as Enums from '../../utils/enums';
 import * as Types from '../../utils/types';
 
+import { chatStore } from '../../stores';
 import { bbcode } from '../../utils/bbcode';
 
 import NamePlate from '../smart/NamePlate';
@@ -43,7 +44,7 @@ export default class Message extends React.Component<IMessageProps, {}> {
                 break;
         }
 
-        return <div className={css(STYLES.main, this.props.style)}>
+        return <div className={css(STYLES.main, this.props.style, chatStore.ignoredCharacters.indexOf(this.props.message.character.name.toLowerCase()) != -1 && STYLES.ignored)}>
             {title}
             <div className={css(STYLES.text)}>
                 {bbcode.parse(msg)}
@@ -68,5 +69,8 @@ const STYLES = StyleSheet.create({
     },
     action: {
         marginRight: '3px'
+    },
+    ignored: {
+        display: 'none'
     }
 });

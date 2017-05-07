@@ -12,7 +12,6 @@ export default class UserStore {
     public username: string;
     public password: string;
     public ticket: Types.ITicket;
-    public ignoredCharacters: Array<string> = new Array<string>();
     public permissions: number;
     @observable public sentMessages: number = 0;
     @observable public sentPMs: number = 0;

@@ -23,6 +23,7 @@ export default class ChatStore {
     public userCharacterName: string = 'Random Dork';
     public userCharacter: Types.Character;
     public globalOps: string[] = new Array<string>();
+    public ignoredCharacters: string[];
 
     public channels: ObservableMap<Types.Channel> = new ObservableMap<Types.Channel>();
     private newChannels: ObservableMap<Types.Channel>;
@@ -55,7 +56,7 @@ export default class ChatStore {
         uiStore.connectionInfo = "Connecting to F-Chat.";
 
         // Start connecting
-        this.socket = new WebSocket(URL_TEST_SERVER_ENCRYPTED);
+        this.socket = new WebSocket(URL_SERVER_ENCRYPTED);
 
         // Listeners
         this.socket.onopen = () => {
@@ -392,13 +393,22 @@ export default class ChatStore {
         }
     }
 
+    @action
     private receiveIDN(obj: Packets.IReceivePacketIDN){
         // Identification successful
         uiStore.connectionInfo = "Identification successful";
     }
     
+    @action
     private receiveIGN(obj: Packets.IReceivePacketIGN){
-        
+        switch(obj.action){
+            case "init": 
+                console.log(JSON.stringify(obj));
+                this.ignoredCharacters = obj.characters;
+                break;
+            default:
+                console.log(JSON.stringify(obj));
+        }
     } 
 
     private receiveJCH(obj: Packets.IReceivePacketJCH){
